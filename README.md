@@ -17,7 +17,7 @@ Copy the travis config, and connect repo to travis
 Add dependencies
 Copy in environment contents
 
-Get data fetch things working
+Get data logging names spaces and tests working
 Setup data access services, and tests for them
 Setup travis and heroku to get this all running automatically
 Run each of the three data loggers (to test and to set up some data)
