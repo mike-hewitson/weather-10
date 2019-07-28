@@ -13,14 +13,14 @@ and test
 ### Start with services
 
 
-Copy the travis config, and connect repo to travis
+Copy the travis config, and connect repo to travis and deploying to heroku
 Add dependencies
 Copy in environment contents
-
 Get data logging names spaces and tests working
+Run each of the two data loggers (to test and to set up some data)
+
 Setup data access services, and tests for them
-Setup travis and heroku to get this all running automatically
-Run each of the three data loggers (to test and to set up some data)
+
 Edit services file with one endpoint and formats. Get this working.
 Do the rest of the services
 
