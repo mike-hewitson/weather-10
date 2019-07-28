@@ -1,1 +1,8 @@
-{}
+{:dev true
+ :port 3000
+ ;; when :nrepl-port is set the application starts the nREPL server on load
+ :nrepl-port 7000
+ :LOGGING "info"
+ :LOGGING_LEVEL "warning"
+ :LOG_LEVEL "warning"
+ :database-url "mongodb://localhost:27017/readings"}

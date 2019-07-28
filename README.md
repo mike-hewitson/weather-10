@@ -12,6 +12,11 @@ and test
 
 ### Start with services
 
+
+Copy the travis config, and connect repo to travis
+Add dependencies
+Copy in environment contents
+
 Get data fetch things working
 Setup data access services, and tests for them
 Setup travis and heroku to get this all running automatically
