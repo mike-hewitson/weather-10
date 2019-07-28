@@ -1,21 +1,128 @@
 # weather-10
 
-generated using Luminus version "3.44"
+generated using Luminus version "3.42"
 
-FIXME
+## Building from new
 
-## Prerequisites
+```
+$ lein new luminus weather-9 +shadow-cljs +re-frame +mongodb +kibit +swagger
+```
 
-You will need [Leiningen][1] 2.0 or above installed.
+and test
 
-[1]: https://github.com/technomancy/leiningen
+### Start with services
 
-## Running
+Get data fetch things working
+Setup data access services, and tests for them
+Setup travis and heroku to get this all running automatically
+Run each of the three data loggers (to test and to set up some data)
+Edit services file with one endpoint and formats. Get this working.
+Do the rest of the services
 
-To start a web server for the application, run:
 
-    lein run 
 
-## License
 
-Copyright © 2019 FIXME
+[![Build Status](https://travis-ci.org/mike-hewitson/weather-9.svg?branch=master)](https://travis-ci.org/mike-hewitson/weather-9)
+
+## Running the app
+
+### Local (for development)
+
+Create a set of terminal windows, each to run one of the commands listed below:
+
+```
+$ mongod --config /usr/local/etc/mongod.conf
+or
+$ mongod
+$ lein run
+$ lein shadow watch app
+
+```
+
+Got to localhost:3000 to access
+
+Swagger ui localhost:3000/api-docs/*/
+
+### testing in the repl
+
+```
+dfsdf
+dsfdsf
+```
+
+To manually reload src and test, and re-run them
+```
+(load-facts)
+```
+
+### style checking
+
+Before pushing changes, run the following:
+```
+$ lein bikeshed
+$ lein cljfmt check
+$ lein kibit
+$ lein cloverage --fail-threshold 40
+$ lein eastwood   (Clojure linting tool)
+```
+
+## heroku
+
+### new heroku app
+
+Create heruko environments
+
+```
+$ heroku create
+```
+
+Add database URI to environments
+Add TZ="Africa/Johannesburg" to environment
+
+To push to heroku
+
+```
+$ git push heroku master
+```
+
+To test locally first
+
+```
+$ heroku open
+```
+### existing heroku app
+
+Link the project to an existing heroku app by using the following, and then pushing as per above:
+
+```
+$ heroku git:remote -a project
+```
+
+## getting data from the various weather services
+
+To run the logger to log one set of readings per location at the current time in the development environment.
+
+```
+$ lein with-profile dev trampoline run -m weather-9.log-data
+$ lein with-profile dev trampoline run -m weather-9.log-tides
+$ lein with-profile dev trampoline run -m weather-9.log-moon-phases
+```
+
+For the scheduled job in Heroku, use the following, log-data every 10 mins, tides every day
+```
+$ lein with-profile production trampoline run -m weather-7.log-data
+```
+
+Repeat this with log-tides and log-moon-phases, each once per day.
+
+## travis-ci
+
+Commits are checked using travis-ci, and pushed to heroku on success.
+
+The following are parts of the travis-ci build:
+- bikeshed (Clojure style checking)
+- cljfmt (Clojure formatting)
+- kibit (Clojure static code analysis)
+- cloverage (runs midje tests and checks for code coverage)
+
+Any failures will fail the build and will not deploy.

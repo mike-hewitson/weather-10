@@ -1,0 +1,19 @@
+language: clojure
+#dist: OSX
+#lein: lein
+before_script:
+#  - npm i -g npm
+#  - npm install
+# script: npm install
+script: lein do clean, javac, test
+script: lein kibit
+script: lein cloverage --fail-threshold 40
+
+# jdk:
+#  - openjdk10
+services:
+  - mongodb
+deploy:
+  provider: heroku
+  api_key: b57c0a89-6981-4472-bf27-b203442b1460
+  app: aqueous-sierra-27664
