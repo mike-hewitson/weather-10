@@ -1,11 +1,12 @@
 (defproject weather-10 "0.1.0-SNAPSHOT"
 
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "weather website to show minimum of relevant weather information"
+  :url "https://aqueous-sierra-27664.herokuapp.com/"
 
   :dependencies [[ch.qos.logback/logback-classic "1.2.3"]
                  [cheshire "5.8.1"]
                  [cljs-ajax "0.8.0"]
+                 [clj-http "3.10.0"]
                  [clojure.java-time "0.3.2"]
                  [com.cognitect/transit-clj "0.8.313"]
                  [com.google.guava/guava "27.0.1-jre"]
@@ -24,6 +25,7 @@
                  [nrepl "0.6.0"]
                  [org.clojure/clojure "1.10.1"]
                  [org.clojure/clojurescript "1.10.520" :scope "provided"]
+                 [org.clojure/math.numeric-tower "0.0.4"]
                  [org.clojure/tools.cli "0.4.2"]
                  [org.clojure/tools.logging "0.4.1"]
                  [org.webjars.npm/bulma "0.7.5"]
@@ -37,7 +39,7 @@
                  [selmer "1.12.12"]]
 
   :min-lein-version "2.0.0"
-  
+
   :source-paths ["src/clj" "src/cljs" "src/cljc"]
   :test-paths ["test/clj"]
   :resource-paths ["resources" "target/cljsbuild"]
@@ -45,6 +47,7 @@
   :main ^:skip-aot weather-10.core
 
   :plugins [[lein-cljsbuild "1.1.7"]
+            [lein-cloverage "1.0.9"]
             [lein-kibit "0.1.2"]]
   :clean-targets ^{:protect false}
   [:target-path [:cljsbuild :builds :app :compiler :output-dir] [:cljsbuild :builds :app :compiler :output-to]]
@@ -54,7 +57,7 @@
    :nrepl-port 7002
    :css-dirs ["resources/public/css"]
    :nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
-  
+
 
   :profiles
   {:uberjar {:omit-source true
@@ -72,7 +75,7 @@
                  :closure-warnings
                  {:externs-validation :off :non-standard-jsdoc :off}
                  :externs ["react/externs/react.js"]}}}}
-             
+
              :aot :all
              :uberjar-name "weather-10.jar"
              :source-paths ["env/prod/clj"]
@@ -109,8 +112,8 @@
                       :source-map true
                       :main "weather-10.app"
                       :pretty-print true}}}}
-                  
-                  
+
+
                   :doo {:build "test"}
                   :source-paths ["env/dev/clj"]
                   :resource-paths ["env/dev/resources"]
@@ -119,7 +122,7 @@
                                (pjstadig.humane-test-output/activate!)]}
    :project/test {:jvm-opts ["-Dconf=test-config.edn"]
                   :resource-paths ["env/test/resources"]
-                  :cljsbuild 
+                  :cljsbuild
                   {:builds
                    {:test
                     {:source-paths ["src/cljc" "src/cljs" "test/cljs"]
@@ -128,7 +131,7 @@
                       :main "weather-10.doo-runner"
                       :optimizations :whitespace
                       :pretty-print true}}}}
-                  
+
                   }
    :profiles/dev {}
    :profiles/test {}})

@@ -22,7 +22,7 @@ Do the rest of the services
 
 
 
-[![Build Status](https://travis-ci.org/mike-hewitson/weather-9.svg?branch=master)](https://travis-ci.org/mike-hewitson/weather-9)
+[![Build Status](https://travis-ci.org/mike-hewitson/weather-10.svg?branch=master)](https://travis-ci.org/mike-hewitson/weather-10)
 
 ## Running the app
 
