@@ -108,32 +108,36 @@
 
                                         ; TODO chat to Rob about the function below, does not feel right
 
-(defn create-moonphase-for-merge [{locations :locations}]
+(defn create-moonphase-for-merge [{readings :readings}]
   "strip out and transform age of moon to icon, age and phase"
-  (apply merge (map (fn [{:keys [phases location]}]
-                      (let [moon-phase (:moon_phase phases)]
-                        {location
-                         {:moon-phase-icon
-                          (-> moon-phase
-                              :ageOfMoon
-                              Integer/parseInt
-                              normalise-age
-                              moon-icons-transform)
-                          :age-of-moon
-                          (-> moon-phase
-                              :ageOfMoon
-                              Integer/parseInt
-                              normalise-age)
-                          :phase-of-moon
-                          (:phaseofMoon moon-phase)}}))
-                    locations)))
+  (apply merge (map (fn [{location :location :as reading}]
+                      {location
+                       {:moon-phase-icon
+                        (-> reading
+                            :moon-phase
+                            (* 28)
+                            int
+                            normalise-age
+                            moon-icons-transform)
+                        :age-of-moon
+                        (-> reading
+                            :moon-phase
+                            (* 28)
+                            int
+                            normalise-age)
+                        :phase-of-moon "some crap"
+                        #_(:phaseofMoon "some crap"
+                                      #_(:moon-phase reading))}})
+                    ;;TODO: fix this
+
+                    readings)))
 
 
 (defn prepare-home-page-data []
   "bring together all of the home page data components"
   (let [weather-data (first (db/get-latest))
         tides-data   (first (db/get-tides))
-        moon-data    (first (db/get-moonphases))
+ ;       moon-data    (first (db/get-moonphases))
         reading-date (:date weather-data)]
     {:date reading-date
      :readings
@@ -143,5 +147,12 @@
                    (format-readings-for-merge weather-data)
                    (create-directions-for-merge weather-data)
                    (create-tides-for-merge tides-data)
-                   (create-moonphase-for-merge moon-data))
+                   (create-moonphase-for-merge weather-data))
        locations-to-send))}))
+
+(comment
+
+  (prepare-home-page-data)
+  (format-readings-for-merge (first (db/get-latest)))
+  (create-moonphase-for-merge (first (db/get-latest)))
+ )

@@ -9,6 +9,9 @@
     [reitit.ring.middleware.parameters :as parameters]
     [weather-10.middleware.formats :as formats]
     [weather-10.middleware.exception :as exception]
+    [weather-10.services.home    :as srvh]
+   [weather-10.services.summary :as srvs]
+   [weather-10.services.history :as srvhis]
     [ring.util.http-response :refer :all]
     [clojure.java.io :as io]))
 
@@ -49,7 +52,7 @@
 
    ["/ping"
     {:get (constantly (ok {:message "pong"}))}]
-   
+
 
    ["/math"
     {:swagger {:tags ["math"]}}
@@ -67,6 +70,61 @@
              :handler (fn [{{{:keys [x y]} :body} :parameters}]
                         {:status 200
                          :body {:total (+ x y)}})}}]]
+
+   ["/weather"
+    {:swagger {:tags ["weather endpoints"]}}
+
+    ["/latest"
+     {:get  {:summary    "returns the current weather conditions"
+             :parameters {:query {}}
+             :responses  {200 {:body {:date     inst?
+                                      :readings [{:sunset          inst?
+                                                  :day-summary     string?
+                                                  :wind-speed      number?
+                                                  :sunrise         inst?
+                                                  :icon            string?
+                                                  :wind-bearing    number?
+                                                  :wind-direction  string?
+                                                  :temperature-max number?
+                                                  :temperature-min number?
+                                                  :location        string?
+                                                  :temperature     number?
+                                                  :week-summary    string?
+                                                  :moon-phase-icon string?
+                                                  :phase-of-moon   string?
+                                                  :age-of-moon     number?
+                                                  :date            string?
+                                                  :dt              number?
+                                                  :type            string?
+                                                  :height          number?}]}}}
+             :handler    (fn [_]
+                           {:status 200
+                            :body (srvh/prepare-home-page-data)})}
+      :post {:summary "plus with spec body parameters"
+             :parameters {:body {}}
+             :responses {200 {:body {:date     inst?
+                                      :readings [{:sunset          inst?
+                                                  :day-summary     string?
+                                                  :wind-speed      number?
+                                                  :sunrise         inst?
+                                                  :icon            string?
+                                                  :wind-bearing    number?
+                                                  :wind-direction  string?
+                                                  :temperature-max number?
+                                                  :temperature-min number?
+                                                  :location        string?
+                                                  :temperature     number?
+                                                  :week-summary    string?
+                                                  :moon-phase-icon string?
+                                                  :phase-of-moon   string?
+                                                  :age-of-moon     number?
+                                                  :date            string?
+                                                  :dt              number?
+                                                  :type            string?
+                                                  :height          number?}]}}}
+             :handler (fn [_]
+                        {:status 200
+                         :body (srvh/prepare-home-page-data)})}}]]
 
    ["/files"
     {:swagger {:tags ["files"]}}

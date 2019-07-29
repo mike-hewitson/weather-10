@@ -18,7 +18,6 @@ Add dependencies
 Copy in environment contents
 Get data logging names spaces and tests working
 Run each of the two data loggers (to test and to set up some data)
-
 Setup data access services, and tests for them
 
 Edit services file with one endpoint and formats. Get this working.
@@ -40,7 +39,7 @@ $ mongod --config /usr/local/etc/mongod.conf
 or
 $ mongod
 $ lein run
-$ lein shadow watch app
+$ lein figwheel
 
 ```
 
