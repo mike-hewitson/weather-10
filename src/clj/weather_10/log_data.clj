@@ -71,8 +71,8 @@
 ; TODO move location to database
 
 (def data-locations
-  '(["Sandton" "-26.097,28.053"]
-    ; ["Paradise Beach" "-34.0521,24.5412"]
+  '(; ["Sandton" "-26.097,28.053"]
+    ["Paradise Beach" "-34.0521,24.5412"]
     ; ["Salt River" "-33.9263,18.4545"]
     ))
     ; ["London" "51.317,0.057"]))
