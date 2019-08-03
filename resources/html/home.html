@@ -6,7 +6,7 @@
       <title>Welcome to weather-10</title>
   </head>
   <body>
-    
+
     <div id="app">
       <section class="section">
         <div class="container is-fluid">
@@ -20,7 +20,7 @@
               <li>Go to Settings ("three dots" icon in the upper right corner of DevTools > Menu > Settings F1 > General > Console)
               <li>Check-in "Enable custom formatters"
               <li>Close DevTools
-              <li>Open DevTools
+                  <li>Open DevTools
             </ul>
             <p>See <a href="http://www.luminusweb.net/docs/clojurescript.md">ClojureScript</a> documentation for further details.</p>
           </div>
@@ -32,6 +32,15 @@
     {% style "/assets/bulma/css/bulma.min.css" %}
     {% style "/assets/material-icons/css/material-icons.min.css" %}
     {% style "/css/screen.css" %}
+
+    {% style "/weather-icons/css/weather-icons.css" %}
+    {% style "/weather-icons/css/weather-icons.min.css" %}
+    {% style "/weather-icons/css/weather-icons-wind.css" %}
+    {% style "/weather-icons/css/weather-icons-wind.min.css" %}
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
 
     <script type="text/javascript">
         var csrfToken = "{{csrf-token}}";

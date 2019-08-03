@@ -1,15 +1,18 @@
 (ns weather-10.core
   (:require
-    [day8.re-frame.http-fx]
-    [reagent.core :as r]
-    [re-frame.core :as rf]
-    [goog.events :as events]
-    [goog.history.EventType :as HistoryEventType]
-    [markdown.core :refer [md->html]]
-    [weather-10.ajax :as ajax]
-    [weather-10.events]
-    [reitit.core :as reitit]
-    [clojure.string :as string])
+   [day8.re-frame.http-fx]
+   [reagent.core :as r]
+   [re-frame.core :as rf]
+   [goog.events :as events]
+   [goog.history.EventType :as HistoryEventType]
+   [markdown.core :refer [md->html]]
+   [weather-10.ajax :as ajax]
+   [weather-10.events]
+   [weather-10.pages.home    :refer [home-page]]
+   [weather-10.pages.summary :refer [summary-page]]
+   [weather-10.pages.history :refer [history-page]]
+   [reitit.core :as reitit]
+   [clojure.string :as string])
   (:import goog.History))
 
 (defn nav-link [uri title page]
@@ -32,19 +35,24 @@
       {:class (when @expanded? :is-active)}
       [:div.navbar-start
        [nav-link "#/" "Home" :home]
+       [nav-link "#/summary" "temp daily" :summary]
+       [nav-link "#/history" "temp/wind history" :history]
+
        [nav-link "#/about" "About" :about]]]]))
 
 (defn about-page []
   [:section.section>div.container>div.content
    [:img {:src "/img/warning_clojure.png"}]])
 
-(defn home-page []
+#_(defn home-page []
   [:section.section>div.container>div.content
    (when-let [docs @(rf/subscribe [:docs])]
      [:div {:dangerouslySetInnerHTML {:__html (md->html docs)}}])])
 
 (def pages
   {:home #'home-page
+   :summary #'summary-page
+   :history #'history-page
    :about #'about-page})
 
 (defn page []
@@ -57,8 +65,10 @@
 
 (def router
   (reitit/router
-    [["/" :home]
-     ["/about" :about]]))
+   [["/" :home]
+    ["/summary" :summary]
+    ["/history" :history]
+    ["/about" :about]]))
 
 ;; -------------------------
 ;; History
@@ -75,14 +85,19 @@
 
 ;; -------------------------
 ;; Initialize app
+
+(defn fetch-latest! []
+ (rf/dispatch [:get-latest]))
+
 (defn mount-components []
   (rf/clear-subscription-cache!)
   (r/render [#'page] (.getElementById js/document "app")))
 
 (defn init! []
   (rf/dispatch-sync [:navigate (reitit/match-by-name router :home)])
-  
+
   (ajax/load-interceptors!)
+  (fetch-latest!)
   (rf/dispatch [:fetch-docs])
   (hook-browser-navigation!)
   (mount-components))
